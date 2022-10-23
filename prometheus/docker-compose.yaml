@@ -7,7 +7,7 @@ services:
     depends_on:
       - nodeexporter
     volumes:
-      - ./prometheus/:/etc/prometheus/
+      - ./:/etc/prometheus/
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
 
