@@ -1,16 +1,26 @@
-version: '3.1'
-
+version: "3"
 services:
-  golang:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    restart: always
+  prometheus:
+    image: "prom/prometheus"
     ports:
-      - '80:80'
-      - '9090:9090'
+      - "9090:9090"
+    depends_on:
+      - nodeexporter
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
 
-  node_exporter:
+  grafana:
+    image: "grafana/grafana-enterprise"
+    depends_on:
+      - prometheus
+    volumes:
+      - ./grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+
+  nodeexporter:
     image: prom/node-exporter
     volumes:
       - /proc:/host/proc:ro
@@ -22,4 +32,4 @@ services:
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)'
     ports:
-      - '9100:9100'
+      - "9100:9100"

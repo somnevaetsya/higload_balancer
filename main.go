@@ -2,6 +2,7 @@ package main
 
 import (
 	"db_forum/app/handlers"
+	"db_forum/app/middleware"
 	"db_forum/app/repositories"
 	"db_forum/app/usecases"
 	"db_forum/pkg"
@@ -9,6 +10,10 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"log"
+	"net/http"
 	"strings"
 )
 
@@ -48,6 +53,14 @@ func main() {
 	threadHandler := handlers.MakeThreadHandler(usecases.MakeThreadUseCase(voteRepository, threadRepository, userRepository, postRepository))
 	userHandler := handlers.MakeUserHandler(usecases.MakeUserUseCase(userRepository))
 
+	prometheus.MustRegister(middleware.HitsCounter)
+
+	http.Handle("/metrics", promhttp.Handler())
+	go func() {
+		log.Fatal(http.ListenAndServe(":9090", nil))
+	}()
+
+	router.Use(middleware.IncCounter)
 	forumRoutes := router.Group(strings.Join([]string{pkg.RootRoute, pkg.ForumRoute}, ""))
 	{
 		forumRoutes.POST("/create", forumHandler.CreateForum)
