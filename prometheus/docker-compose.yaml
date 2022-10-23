@@ -13,6 +13,7 @@ services:
 
   grafana:
     image: "grafana/grafana-enterprise"
+    user: "$UID:$GID"
     depends_on:
       - prometheus
     volumes:
