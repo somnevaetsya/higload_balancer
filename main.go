@@ -94,7 +94,7 @@ func main() {
 		userRoutes.POST("/:nickname/profile", userHandler.UpdateUser)
 	}
 
-	err = router.Run(":5000")
+	err = router.Run(":80")
 	if err != nil {
 		fmt.Println(err.Error())
 		return
