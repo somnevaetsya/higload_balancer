@@ -10,7 +10,6 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx"
-	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
 	"net/http"
@@ -52,8 +51,6 @@ func main() {
 	serviceHandler := handlers.MakeServiceHandler(usecases.MakeServiceUseCase(serviceRepository))
 	threadHandler := handlers.MakeThreadHandler(usecases.MakeThreadUseCase(voteRepository, threadRepository, userRepository, postRepository))
 	userHandler := handlers.MakeUserHandler(usecases.MakeUserUseCase(userRepository))
-
-	prometheus.MustRegister(middleware.HitsCounter)
 
 	http.Handle("/metrics", promhttp.Handler())
 	go func() {
