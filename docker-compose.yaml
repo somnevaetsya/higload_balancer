@@ -4,7 +4,7 @@ services:
   golang:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
     restart: always
     ports:
       - '80:80'
