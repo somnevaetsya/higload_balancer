@@ -1,6 +1,6 @@
 FROM golang:1.19 AS build
 
-ADD db_forum /app
+ADD . /app
 WORKDIR /app
 RUN go build  ./main.go
 
@@ -24,7 +24,7 @@ VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
 USER root
 
 WORKDIR /usr/src/app
-COPY db_forum .
+COPY . .
 COPY --from=build /app/main/ .
 
 EXPOSE 5000
