@@ -35,10 +35,9 @@ services:
     ports:
       - "9100:9100"
 
-  postrg:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    restart: always
+  postgres:
+    image: postgres:latest
     ports:
-      - '5432:5432'
+      - "5432:5432"
+    volumes:
+      - ./db_postgres:/var/lib/postgresql/data

@@ -22,4 +22,4 @@ COPY . .
 
 ENV PGPASSWORD forum
 CMD service postgresql start
-CMD psql -h localhost -d forum -U forum -p 5432 -a -q -f ./db/db.sql
+CMD psql -h prometheus_postrg_1 -d forum -U forum -p 5432 -a -q -f ./db/db.sql
