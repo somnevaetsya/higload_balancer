@@ -21,4 +21,5 @@ WORKDIR /usr/src/app
 COPY . .
 
 ENV PGPASSWORD forum
-CMD service postgresql start && psql -h localhost -d forum -U forum -p 5432 -a -q -f ./db/db.sql
+CMD service postgresql start
+CMD psql -h localhost -d forum -U forum -p 5432 -a -q -f ./db/db.sql
