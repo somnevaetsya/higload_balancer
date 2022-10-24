@@ -17,6 +17,9 @@ EXPOSE 5432
 VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
 USER root
 
+WORKDIR /usr/src/app
+COPY . .
+
 EXPOSE 5000
 ENV PGPASSWORD forum
 CMD service postgresql start && psql -h localhost -d forum -U forum -p 5432 -a -q -f ../db/db.sql
