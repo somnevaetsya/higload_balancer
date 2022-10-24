@@ -33,6 +33,9 @@ func main() {
 		AfterConnect:   nil,
 		AcquireTimeout: 0,
 	})
+	if err != nil {
+		log.Fatal("ERROR WHILE CONNECT TO DB:", err)
+	}
 
 	defer db.Close()
 
@@ -92,6 +95,7 @@ func main() {
 	}
 
 	err = router.Run(":80")
+	fmt.Println("Successfull start router")
 	if err != nil {
 		fmt.Println(err.Error())
 		return
